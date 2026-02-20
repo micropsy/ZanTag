@@ -1,5 +1,5 @@
 type Env = {
-  BUCKET: any;
+  BUCKET: R2Bucket;
 };
 
 export async function uploadImage(
