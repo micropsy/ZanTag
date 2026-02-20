@@ -1,0 +1,16 @@
+name = "zantag-v2"
+compatibility_date = "2024-05-01"
+
+
+[build]
+command = "npm run build"
+cwd = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "zantag-db"
+database_id = "9783370f-1ac4-4308-aa6c-26c3f37b4195"
+
+[[r2_buckets]]
+binding = "BUCKET"
+bucket_name = "zantag-assets"
