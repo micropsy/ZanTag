@@ -1,6 +1,5 @@
 import { json, type ActionFunctionArgs, type LoaderFunctionArgs, redirect } from "@remix-run/cloudflare";
 import { Form, useActionData, useNavigation, Link } from "@remix-run/react";
-import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 import { getDb } from "~/utils/db.server";
 import { createUserSession, getUserId } from "~/utils/session.server";
@@ -162,7 +161,7 @@ export default function Login() {
           </Form>
 
           <p className="text-center text-sm text-slate-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link to="/signup" className="font-semibold text-[#06B6D4] hover:text-[#0891B2] hover:underline">
               Register
             </Link>

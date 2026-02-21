@@ -1,7 +1,7 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData, Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
-import { ArrowRight, CreditCard, Share2, Users, FileText, Scan, BarChart3, ShieldCheck, Building2 } from "lucide-react";
+import { ArrowRight, Contact, Share2, Users, FileText, Scan, BarChart3, ShieldCheck, Building2 } from "lucide-react";
 import { LandingHeader } from "~/components/LandingHeader";
 import { getUser } from "~/utils/session.server";
 
@@ -53,7 +53,7 @@ export default function Index() {
           <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="bg-white p-8 rounded-2xl shadow-sm border border-slate-200 hover:shadow-lg transition-all duration-300">
               <div className="w-12 h-12 bg-slate-100 rounded-xl flex items-center justify-center mb-6">
-                <CreditCard className="text-slate-900 w-6 h-6" />
+                <Contact className="text-slate-900 w-6 h-6" />
               </div>
               <h3 className="text-xl font-bold mb-3 text-slate-900">Digital vCard</h3>
               <p className="text-slate-600 leading-relaxed">Instantly share your contact details with a simple scan or link.</p>
