@@ -187,3 +187,5 @@ export default function AnalyticsPage() {
     </div>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "~/components/RouteErrorBoundary";

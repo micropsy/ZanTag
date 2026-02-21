@@ -139,3 +139,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "~/components/RouteErrorBoundary";

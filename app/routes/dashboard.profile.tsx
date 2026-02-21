@@ -403,3 +403,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+export { RouteErrorBoundary as ErrorBoundary } from "~/components/RouteErrorBoundary";
