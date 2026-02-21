@@ -1,7 +1,7 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/cloudflare";
 import { useLoaderData, Link } from "@remix-run/react";
 import { Button } from "~/components/ui/button";
-import { ArrowRight, CreditCard, Share2, Users, FileText } from "lucide-react";
+import { ArrowRight, CreditCard, Share2, Users, FileText, Scan, BarChart3, ShieldCheck, Building2 } from "lucide-react";
 import { LandingHeader } from "~/components/LandingHeader";
 import { getUser } from "~/utils/session.server";
 
@@ -78,6 +78,34 @@ export default function Index() {
               </div>
               <h3 className="text-xl font-bold mb-3">Easy Sharing</h3>
               <p className="text-slate-600">Dynamic URLs and QR codes for seamless networking everywhere.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-[#06B6D4]/10 rounded-xl flex items-center justify-center mb-6">
+                <Building2 className="text-[#06B6D4] w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Team Management</h3>
+              <p className="text-slate-600">Create and manage digital cards for all employees with centralized control.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-[#0F172A]/10 rounded-xl flex items-center justify-center mb-6">
+                <ShieldCheck className="text-[#0F172A] w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Brand Control</h3>
+              <p className="text-slate-600">Ensure consistent templates and color themes across your organization.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-[#06B6D4]/10 rounded-xl flex items-center justify-center mb-6">
+                <BarChart3 className="text-[#06B6D4] w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Analytics</h3>
+              <p className="text-slate-600">Track scans, shares, and conversions with detailed dashboards.</p>
+            </div>
+            <div className="bg-white p-8 rounded-2xl shadow-sm border hover:shadow-md transition-shadow">
+              <div className="w-12 h-12 bg-[#0F172A]/10 rounded-xl flex items-center justify-center mb-6">
+                <Scan className="text-[#0F172A] w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold mb-3">Smart Scan</h3>
+              <p className="text-slate-600">High-quality OCR to capture physical business cards reliably.</p>
             </div>
           </div>
         </section>

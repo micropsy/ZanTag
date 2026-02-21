@@ -21,8 +21,7 @@ export const loader = async ({ request, context }: LoaderFunctionArgs) => {
   }
 
   const db = getDb(context);
-  // We need to cast db as any or ensure types are updated because we just added SystemSetting
-  const setting = await (db as unknown as { systemSetting: { findUnique: (args: { where: { key: string } }) => Promise<{ value: string } | null> } }).systemSetting.findUnique({
+  const setting = await db.systemSetting.findUnique({
     where: { key: "invitationOnly" },
   });
 
@@ -39,7 +38,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const { invitationOnly } = await request.json() as { invitationOnly: boolean };
 
   try {
-    await (db as unknown as { systemSetting: { upsert: (args: { where: { key: string }, update: { value: string }, create: { key: string, value: string } }) => Promise<void> } }).systemSetting.upsert({
+    await db.systemSetting.upsert({
       where: { key: "invitationOnly" },
       update: { value: String(invitationOnly) },
       create: { key: "invitationOnly", value: String(invitationOnly) },
