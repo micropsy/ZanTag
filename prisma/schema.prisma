@@ -8,12 +8,34 @@ datasource db {
 }
 
 model User {
+  id                String      @id @default(cuid())
+  email             String      @unique
+  name              String?
+  password          String
+  inviteCode        InviteCode?
+  isEmailVerified   Boolean     @default(false)
+  verificationToken String?
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+  profile           Profile?
+}
+
+model InviteCode {
   id        String   @id @default(cuid())
-  email     String   @unique
-  name      String?
+  code      String   @unique
+  isUsed    Boolean  @default(false)
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  profile   Profile?
+}
+
+model Tag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  slug      String   @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Profile {

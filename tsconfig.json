@@ -17,6 +17,7 @@
     "paths": {
       "~/*": ["./app/*"]
     },
-    "types": ["@remix-run/cloudflare", "vite/client", "@cloudflare/workers-types"]
+    "types": ["@remix-run/cloudflare", "vite/client", "@cloudflare/workers-types"],
+    "noEmit": true
   }
 }
