@@ -13,6 +13,8 @@ import { Label } from "~/components/ui/label";
 import { toast } from "sonner";
 import { RouteErrorBoundary } from "~/components/RouteErrorBoundary";
 
+import { createUser } from "~/services/user.server";
+
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const userId = await getUserId(request);
   if (userId) return redirect("/dashboard");
@@ -68,17 +70,21 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
     const hashedPassword = await hash(password, 10);
     const verificationToken = crypto.randomUUID();
 
-    const newUser = await db.user.create({
-      data: {
-        email,
-        password: hashedPassword,
-        verificationToken,
-      },
+    const newUser = await createUser(context, {
+      email,
+      passwordHash: hashedPassword,
+      inviteCode
+    });
+    
+    // Update verification token (since createUser doesn't set it)
+    await db.user.update({
+      where: { id: newUser.id },
+      data: { verificationToken }
     });
 
     // 4. Mark invite code as used
     await db.inviteCode.update({
-      where: { id: validCode.id },
+      where: { code: inviteCode },
       data: {
         isUsed: true,
         userId: newUser.id,

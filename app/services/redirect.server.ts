@@ -21,13 +21,13 @@ export async function resolveShortCode(context: AppLoadContext, shortCode: strin
 
   // Logic: 
   // If INDIVIDUAL -> /p/:username
-  // If BUSINESS_STAFF -> /:company_slug/:username
+  // If BUSINESS_STAFF -> /b/:company_slug/:username
   
   const username = user.profile?.username;
   if (!username) return "/"; // Fallback
 
   if (user.role === UserRole.BUSINESS_STAFF && user.profile?.company?.slug) {
-    return `/${user.profile.company.slug}/${username}`;
+    return `/b/${user.profile.company.slug}/${username}`;
   }
 
   return `/p/${username}`;

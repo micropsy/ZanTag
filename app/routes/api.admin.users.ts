@@ -1,6 +1,7 @@
 import { type ActionFunctionArgs, json } from "@remix-run/cloudflare";
 import { getDb } from "~/utils/db.server";
 import { requireAdmin } from "~/utils/session.server";
+import { finalizeSeparation, removeStaff } from "~/services/business.server";
 
 export const action = async ({ request, context }: ActionFunctionArgs) => {
   const currentUser = await requireAdmin(request, context);
@@ -12,7 +13,7 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
 
   const data = await request.json() as { 
     id: string; 
-    intent?: "update" | "reset-password";
+    intent?: "update" | "reset-password" | "delete" | "separate";
     // Update fields
     name?: string; 
     email?: string; 
@@ -31,6 +32,29 @@ export const action = async ({ request, context }: ActionFunctionArgs) => {
   const intent = data.intent || "update";
 
   try {
+    if (intent === "separate") {
+      // Start 30-day grace period
+      await removeStaff(context, currentUser.id, data.id);
+      return json({ success: true, message: "User separated. 30-day grace period started." });
+    }
+
+    if (intent === "delete") {
+      const user = await db.user.findUnique({ where: { id: data.id } });
+      
+      if (user?.separatedAt) {
+        const now = new Date();
+        const diffTime = Math.abs(now.getTime() - user.separatedAt.getTime());
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        
+        if (diffDays > 30) {
+           return json({ error: "Cannot delete user after 30-day grace period. User is now a permanent Individual." }, { status: 400 });
+        }
+      }
+
+      await finalizeSeparation(context, currentUser.id, data.id);
+      return json({ success: true, message: "User deleted successfully." });
+    }
+
     if (intent === "reset-password") {
       // In a real app, this would send an email or generate a temp password.
       // For this demo, we'll set a default password or handle it securely.
