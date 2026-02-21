@@ -11,7 +11,8 @@ import styles from "./styles/tailwind.css?url";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: styles },
-  { rel: "icon", href: "/favicon.ico" },
+  { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+  { rel: "shortcut icon", type: "image/x-icon", href: "/favicon.ico" },
   { rel: "apple-touch-icon", href: "/logo.png" },
 ];
 
