@@ -4,9 +4,14 @@ import {
 } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { nodePolyfills } from "vite-plugin-node-polyfills";
 
 export default defineConfig({
   plugins: [
+    nodePolyfills({
+      include: ["crypto", "stream", "events", "buffer", "path", "process", "util", "string_decoder"],
+      globals: { Buffer: true, global: true, process: true },
+    }),
     remixCloudflareDevProxy(),
     remix({
       future: {
@@ -19,7 +24,17 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
-  resolve: {
-    dedupe: ["react", "react-dom"],
+  ssr: {
+    external: ["node:crypto", "node:stream", "node:events", "node:path", "node:buffer", "node:util", "node:string_decoder", "node:process"],
+    noExternal: ["googleapis", "google-auth-library", "gaxios", "gtoken", "gcp-metadata"],
+  },
+  build: {
+    sourcemap: false,
+    rollupOptions: {
+      onwarn(warning, defaultHandler) {
+        if (warning.code === 'EMPTY_BUNDLE') return;
+        defaultHandler(warning);
+      },
+    },
   },
 });

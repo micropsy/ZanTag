@@ -13,6 +13,9 @@ export default [
       "**/.wrangler/**",
       "**/.cache/**",
       "**/public/build/**",
+      "**/temp_reference/**",
+      "**/temp_zantag_vercel/**",
+      "**/functions/**",
       ".env",
       ".DS_Store"
     ]

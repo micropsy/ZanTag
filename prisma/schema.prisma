@@ -1,10 +1,12 @@
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
+  engineType      = "wasm"
 }
 
 datasource db {
   provider = "sqlite"
+//  url      = "file:./dev.db"
 }
 
 model User {
@@ -15,9 +17,11 @@ model User {
   inviteCode        InviteCode?
   isEmailVerified   Boolean     @default(false)
   verificationToken String?
+  role              String      @default("INDIVIDUAL") // INDIVIDUAL, SUPER_ADMIN, BUSINESS_ADMIN, BUSINESS_STAFF
   createdAt         DateTime    @default(now())
   updatedAt         DateTime    @updatedAt
   profile           Profile?
+  organizationsAdmin Organization[]
 }
 
 model InviteCode {
@@ -26,6 +30,8 @@ model InviteCode {
   isUsed    Boolean  @default(false)
   user      User?    @relation(fields: [userId], references: [id])
   userId    String?  @unique
+  role      String   @default("INDIVIDUAL")
+  email     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -39,13 +45,82 @@ model Tag {
 }
 
 model Profile {
-  id          String   @id @default(cuid())
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String   @unique
-  username      String   @unique
-  displayName String?
-  bio         String?
-  avatarUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String        @id @default(cuid())
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String        @unique
+  username        String        @unique // acts as slug/customSlug
+  displayName     String?
+  bio             String?
+  avatarUrl       String?
+  companyId       String?
+  isLockedByAdmin Boolean       @default(false)
+  primaryColor    String?       @default("#0F172A")
+  secondaryColor  String?       @default("#06B6D4")
+  views           Int           @default(0)
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  
+  contacts        Contact[]
+  documents       Document[]
+  links           Link[]
+  company         Organization? @relation(fields: [companyId], references: [id], onDelete: SetNull)
+}
+
+model Link {
+  id        String   @id @default(cuid())
+  profileId String
+  title     String
+  url       String
+  icon      String?
+  type      String   @default("SOCIAL")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  profileId String
+  name      String
+  email     String?
+  phone     String?
+  notes     String?
+  source    String   @default("MANUAL")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Document {
+  id        String   @id @default(cuid())
+  profileId String
+  title     String
+  url       String
+  type      String   @default("PDF")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  profile   Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
+}
+
+model Organization {
+  id        String    @id @default(cuid())
+  name      String
+  slug      String    @unique
+  logo      String?
+  adminId   String
+  admin     User      @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  profiles  Profile[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model SystemSetting {
+  key   String @id
+  value String
 }

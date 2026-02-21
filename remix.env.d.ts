@@ -1,5 +1,6 @@
 /// <reference types="@remix-run/dev" />
 /// <reference types="@remix-run/cloudflare" />
+/// <reference types="@cloudflare/workers-types" />
 /// <reference types="vite/client" />
 
 import "@remix-run/server-runtime";
@@ -14,6 +15,8 @@ declare global {
     GOOGLE_REDIRECT_URI: string;
     EMAIL_USER: string;
     INVITE_CODE_SECRET: string;
+    RESEND_API_KEY: string;
+    EMAIL_FROM: string;
   }
 }
 
